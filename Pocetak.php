@@ -172,6 +172,92 @@ class Start{
     }
 
 
+    //==========================================//
+    //  RADNICI - PREGLED/UNOS/IZMJENA/BRISANJE //
+    //==========================================//
+
+    private function pregledRadnika($prikaziradnike = true){
+        echo '============================' . PHP_EOL;
+        echo 'Svi radnici:' . PHP_EOL;
+        echo '============================' . PHP_EOL;
+        $rb=1;
+        foreach ($this->radnici as $radnik){
+            echo $rb++ . '. ' . $radnik->ime . ' ' . $radnik->prezime . PHP_EOL;
+        }
+        echo '============================' . PHP_EOL;
+        if($prikaziradnike){
+            $this->radnikIzbornik();
+        }
+    }
+
+
+    private function unosdRadnika($unosradnika = true){
+        $r=new stdClass();
+        $r->ime = Pomocno::unosTeksta('Unesite ime radnika:');
+        $r->prezime = Pomocno::unosTeksta('Unesite prezime radnika:');
+        $r->id = Pomocno::unosBroja('Unesite ID radnika:');
+        $r->placa = Pomocno::unosDecimalnogBroja('Unesite preporucenu placu radnika (EUR):');
+        $this->radnici[]=$r;
+        $this->radnikIzbornik();
+    }
+
+
+
+    //=========================================//
+    //  SMJENE - PREGLED/UNOS/IZMJENA/BRISANJE //
+    //=========================================//
+
+    private function pregledSmjene($prikazismjene = true){
+        echo '============================' . PHP_EOL;
+        echo 'Sve smjene:' . PHP_EOL;
+        echo '============================' . PHP_EOL;
+        $rb=1;
+        foreach($this->smjene as $smjena){
+            echo $rb++ . '. ' . $smjena->naziv . PHP_EOL;
+        }
+        echo '============================' . PHP_EOL;
+        if($prikazismjene){
+            $this->smjenaIzbornik();
+        }
+    }
+
+
+    private function unosSmjene($unossmjene = true){
+        $s=new stdClass();
+        $s->naziv = Pomocno::unosTeksta('Unesite naziv smjene:');
+        $s->trajanje = Pomocno::unosDecimalnogBroja('Unesite broj radnih sati u tjednu:');
+        $this->smjene[]=$s;
+        $this->smjenaIzbornik();
+    }
+
+
+    //============================================//
+    //  PROIZVODI - PREGLED/UNOS/IZMJENA/BRISANJE //
+    //============================================//
+
+    private function pregledProizvoda($prikaziProizvode = true){
+        echo '============================' . PHP_EOL;
+        echo 'Proizvodi:' . PHP_EOL;
+        echo '============================' . PHP_EOL;
+        $rb=1;
+        foreach($this->proizvodi as $proizvod){
+            echo $rb++ . '. ' . $proizvod->naziv . PHP_EOL;
+        }
+        echo '============================' . PHP_EOL;
+        if($prikaziProizvode){
+            $this->proizvodIzbornik();
+        }
+    }
+
+
+    private function unosProizvoda($unosProizvoda = true){
+        $p=new stdClass();
+        $p->naziv = Pomocno::unosTeksta('Unesite naziv proizvoda:');
+        $p->narucitelj = Pomocno::unosTeksta('Unesite naziv narucitelja:');
+        $this->proizvodi[]=$p;
+        $this->proizvodIzbornik();
+    }
+
 
 }
 
