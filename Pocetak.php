@@ -56,7 +56,9 @@ class Start{
                 $this->proizvodIzbornik();
                 break;
             case 4:
-                echo 'Dovidjena!!!' . PHP_EOL;
+                ECHO '===========' . PHP_EOL;
+                echo 'DOVIDJENJA!' . PHP_EOL;
+                ECHO '===========' . PHP_EOL;
                 break;
             default:
                 $this->glavniIzbornik();
@@ -191,13 +193,41 @@ class Start{
     }
 
 
-    private function unosdRadnika($unosradnika = true){
+    private function unosdRadnika(){
         $r=new stdClass();
         $r->ime = Pomocno::unosTeksta('Unesite ime radnika:');
         $r->prezime = Pomocno::unosTeksta('Unesite prezime radnika:');
         $r->id = Pomocno::unosBroja('Unesite ID radnika:');
         $r->placa = Pomocno::unosDecimalnogBroja('Unesite preporucenu placu radnika (EUR):');
         $this->radnici[]=$r;
+        echo '=============' . PHP_EOL;
+        echo 'RADNIK DODAN!' . PHP_EOL;
+        echo '=============' . PHP_EOL;
+        $this->radnikIzbornik();
+    }
+
+
+    private function izmjenaRadnika(){
+        $this->pregledRadnika(false);
+        $rb=Pomocno::brojRaspon('Odaberite radnika: ',1,count($this->radnici));
+        $rb--;
+        $this->radnici[$rb]->ime = Pomocno::unosTeksta('Unesite ispravak imena (' . 
+        $this->radnici[$rb]->ime 
+        .'): ', $this->radnici[$rb]->ime);
+        $this->radnici[$rb]->prezime = Pomocno::unosTeksta('Unesite ispravak prezimena (' . 
+        $this->radnici[$rb]->prezime 
+        .'): ', $this->radnici[$rb]->prezime);
+        $this->radnici[$rb]->id = Pomocno::unosBroja('Unesite ispravak ID (' . 
+        $this->radnici[$rb]->id 
+        .'): ', $this->radnici[$rb]->id);
+        $this->radnici[$rb]->placa = Pomocno::unosDecimalnogBroja('Unesite ispravak preporucene place (' . 
+        $this->radnici[$rb]->placa 
+        .'): ', $this->radnici[$rb]->placa);
+
+        echo '=================' . PHP_EOL;
+        echo 'RADNIK IZMJENJEN!' . PHP_EOL;
+        echo '=================' . PHP_EOL;
+
         $this->radnikIzbornik();
     }
 
@@ -222,12 +252,35 @@ class Start{
     }
 
 
-    private function unosSmjene($unossmjene = true){
+    private function unosSmjene(){
         $s=new stdClass();
-        $s->naziv = Pomocno::unosTeksta('Unesite naziv smjene:');
+        $s->naziv = Pomocno::unosTeksta('Unesite naziv smjene: ');
         $s->trajanje = Pomocno::unosDecimalnogBroja('Unesite broj radnih sati u tjednu:');
         $this->smjene[]=$s;
+        echo '==============' . PHP_EOL;
+        echo 'SMJENA DODANA!' . PHP_EOL;
+        echo '==============' . PHP_EOL;
         $this->smjenaIzbornik();
+    }
+
+
+    private function izmjenaSmjene(){
+        $this->pregledSmjene(false);
+        $rb=Pomocno::brojRaspon('Odaberite smjenu: ',1,count($this->smjene));
+        $rb--;
+        $this->smjene[$rb]->naziv = Pomocno::unosTeksta('Unesite ispravak naziva smjene (' .
+        $this->smjene[$rb]->naziv
+        .'): ', $this->smjene[$rb]->naziv);
+        $this->smjene[$rb]->trajanje = Pomocno::unosDecimalnogBroja('Unesite ispravak broja sati u tjednu (' .
+        $this->smjene[$rb]->trajanje
+        .'): ', $this->smjene[$rb]->trajanje);
+        
+        echo '==================' . PHP_EOL;
+        echo 'SMJENA IZMJENJENA!' . PHP_EOL;
+        echo '==================' . PHP_EOL;
+
+        $this->smjenaIzbornik();
+
     }
 
 
@@ -250,14 +303,35 @@ class Start{
     }
 
 
-    private function unosProizvoda($unosProizvoda = true){
+    private function unosProizvoda(){
         $p=new stdClass();
-        $p->naziv = Pomocno::unosTeksta('Unesite naziv proizvoda:');
+        $p->naziv = Pomocno::unosTeksta('Unesite naziv proizvoda: ');
         $p->narucitelj = Pomocno::unosTeksta('Unesite naziv narucitelja:');
         $this->proizvodi[]=$p;
+        ECHO '===============' . PHP_EOL;
+        echo 'PROIZVOD DODAN!' . PHP_EOL;
+        ECHO '===============' . PHP_EOL;
         $this->proizvodIzbornik();
     }
 
+
+    private function izmjenaProizvoda(){
+        $this->pregledProizvoda(false);
+        $rb=Pomocno::brojRaspon('Odaberite Proizvod: ',1,count($this->proizvodi));
+        $rb--;
+        $this->proizvodi[$rb]->naziv = Pomocno::unosTeksta('Unesite ispravak naziva proizvoda (' .
+        $this->proizvodi[$rb]->naziv
+        .'): ', $this->proizvodi[$rb]->naziv);
+        $this->proizvodi[$rb]->narucitelj = Pomocno::unosTeksta('Unesite ispravak narucitelja proizvoda (' .
+        $this->proizvodi[$rb]->narucitelj
+        .'): ', $this->proizvodi[$rb]->narucitelj);
+
+        echo '===================' . PHP_EOL;
+        echo 'PROIZVOD IZMJENJEN!' . PHP_EOL;
+        echo '===================' . PHP_EOL;
+
+        $this->proizvodIzbornik();
+    }
 
 }
 
