@@ -36,11 +36,14 @@ class Start{
     //==================//
 
     private function glavniIzbornik(){
-        echo 'Glavni izbornik' . PHP_EOL;
+        echo '               ' . PHP_EOL;
+        echo 'GLAVNI IZBORNIK' . PHP_EOL;
+        echo '===============' . PHP_EOL;
         echo '1. Radnici' . PHP_EOL;
         echo '2. Smjene' . PHP_EOL;
         echo '3. Proizvodi' . PHP_EOL;
         echo '4. Izlaz iz programa - EXIT' . PHP_EOL;
+        echo '               ' . PHP_EOL;
         $this->opcijaGlavniIzbornik();
     }
 
@@ -70,12 +73,15 @@ class Start{
     //==================//
 
     private function radnikIzbornik(){
-        echo 'Radnik izbornik' . PHP_EOL;
+        echo '               ' . PHP_EOL;
+        echo 'RADNIK IZBORNIK' . PHP_EOL;
+        echo '===============' . PHP_EOL;
         echo '1. Pregled radnika' . PHP_EOL;
         echo '2. Unos radnika' . PHP_EOL;
         echo '3. Izmjena radnika' . PHP_EOL;
         echo '4. Brisanje radnika' . PHP_EOL;
         echo '5. Povratak - Glavni izbornik' . PHP_EOL;
+        echo '               ' . PHP_EOL;
         $this->opcijaRadnikIzbornik();
     }
 
@@ -106,12 +112,15 @@ class Start{
     //==================//
 
     private function smjenaIzbornik(){
-        echo 'Smjena izbornik' . PHP_EOL;
+        echo '               ' . PHP_EOL;
+        echo 'SMJENA IZBORNIK' . PHP_EOL;
+        echo '===============' . PHP_EOL;
         echo '1. Pregled smjene' . PHP_EOL;
         echo '2. Unos smjene' . PHP_EOL;
         echo '3. Izmjena smjene' . PHP_EOL;
         echo '4. Brisanje smjene' . PHP_EOL;
         echo '5. Povratak - Glavni izbornik' . PHP_EOL;
+        echo '               ' . PHP_EOL;
         $this->opcijaSmjenaIzbornik();
     }
 
@@ -142,12 +151,16 @@ class Start{
     //====================//
 
     private function proizvodIzbornik(){
-        echo 'Proizvod izbornik' . PHP_EOL;
+        echo '               ' . PHP_EOL;
+        echo 'PROIZVOD IZBORNIK' . PHP_EOL;
+        echo '=================' . PHP_EOL;        
         echo '1. Pregled proizvoda' . PHP_EOL;
         echo '2. Unos proizvoda' . PHP_EOL;
         echo '3. Izmjena proizvoda' . PHP_EOL;
         echo '4. Brisanje proizvoda' . PHP_EOL;
         echo '5. Povratak - Glavni izbornik' . PHP_EOL;
+        echo '               ' . PHP_EOL;
+
         $this->opcijaProizvodIzbornik();
     }
 
