@@ -94,10 +94,24 @@ class Start{
                 $this->unosdRadnika();
                 break;
             case 3:
-                $this->izmjenaRadnika();
+                if(count($this->radnici)===0){
+                    echo '===================================' . PHP_EOL;
+                    echo 'Nema unesenih radnika u aplikaciji!' . PHP_EOL;
+                    echo '===================================' . PHP_EOL;
+                    $this->radnikIzbornik();
+                }else{
+                    $this->izmjenaRadnika();
+                }
                 break;
             case 4:
-                $this->brisanjeRadnika();
+                if(count($this->radnici)===0){
+                    echo '===================================' . PHP_EOL;
+                    echo 'Nema unesenih radnika u aplikaciji!' . PHP_EOL;
+                    echo '===================================' . PHP_EOL;
+                    $this->radnikIzbornik();
+                }else{
+                    $this->brisanjeRadnika();
+                }                
                 break;
             case 5:
                 $this->glavniIzbornik();
@@ -133,10 +147,24 @@ class Start{
                 $this->unosSmjene();
                 break;
             case 3:
-                $this->izmjenaSmjene();
+                if(count($this->smjene)===0){
+                    echo '==================================' . PHP_EOL;
+                    echo 'Nema unesenih smjena u aplikaciji!' . PHP_EOL;
+                    echo '==================================' . PHP_EOL;
+                    $this->smjenaIzbornik();
+                }else{
+                    $this->izmjenaSmjene();
+                }                
                 break;
             case 4:
-                $this->brisanjeSmjene();
+                if(count($this->smjene)===0){
+                    echo '==================================' . PHP_EOL;
+                    echo 'Nema unesenih smjena u aplikaciji!' . PHP_EOL;
+                    echo '==================================' . PHP_EOL;
+                    $this->smjenaIzbornik();
+                }else{
+                    $this->brisanjeSmjene();
+                }               
                 break;
             case 5:
                 $this->glavniIzbornik();
@@ -173,10 +201,24 @@ class Start{
                 $this->unosProizvoda();
                 break;
             case 3:
-                $this->izmjenaProizvoda();
+                if(count($this->proizvodi)===0){
+                    echo '=====================================' . PHP_EOL;
+                    echo 'Nema unesenih proizvoda u aplikaciji!' . PHP_EOL;
+                    echo '=====================================' . PHP_EOL;
+                    $this->proizvodIzbornik();
+                }else{
+                    $this->izmjenaProizvoda();
+                }
                 break;
             case 4:
-                $this->brisanjeProizvoda();
+                if(count($this->proizvodi)===0){
+                    echo '=====================================' . PHP_EOL;
+                    echo 'Nema unesenih proizvoda u aplikaciji!' . PHP_EOL;
+                    ECHO '=====================================' . PHP_EOL;
+                    $this->proizvodIzbornik();
+                }else{
+                    $this->brisanjeProizvoda();
+                }                
                 break;
             case 5:
                 $this->glavniIzbornik();
