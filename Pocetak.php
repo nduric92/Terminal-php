@@ -178,6 +178,8 @@ class Start{
     //  RADNICI - PREGLED/UNOS/IZMJENA/BRISANJE //
     //==========================================//
 
+    //  PREGLED
+
     private function pregledRadnika($prikaziradnike = true){
         echo '============================' . PHP_EOL;
         echo 'Svi radnici:' . PHP_EOL;
@@ -192,6 +194,7 @@ class Start{
         }
     }
 
+    //  UNOS
 
     private function unosdRadnika(){
         $r=new stdClass();
@@ -206,6 +209,7 @@ class Start{
         $this->radnikIzbornik();
     }
 
+    //  IZMJENA
 
     private function izmjenaRadnika(){
         $this->pregledRadnika(false);
@@ -231,11 +235,26 @@ class Start{
         $this->radnikIzbornik();
     }
 
+    //  BRISANJE
+
+    private function brisanjeRadnika(){
+        $this->pregledRadnika(false);
+        $rb = Pomocno::brojRaspon('Odaberite radnika: ',1,count($this->radnici));
+        $rb--;
+        array_splice($this->radnici,$rb,1);
+        echo '===============' . PHP_EOL;
+        echo 'RADNIK OBRISAN!' . PHP_EOL;
+        echo '===============' . PHP_EOL;
+        $this->radnikIzbornik();
+    }
+
 
 
     //=========================================//
     //  SMJENE - PREGLED/UNOS/IZMJENA/BRISANJE //
     //=========================================//
+
+    //  PREGLED
 
     private function pregledSmjene($prikazismjene = true){
         echo '============================' . PHP_EOL;
@@ -251,6 +270,7 @@ class Start{
         }
     }
 
+    //  UNOS
 
     private function unosSmjene(){
         $s=new stdClass();
@@ -263,6 +283,7 @@ class Start{
         $this->smjenaIzbornik();
     }
 
+    //  IZMJENA
 
     private function izmjenaSmjene(){
         $this->pregledSmjene(false);
@@ -283,10 +304,24 @@ class Start{
 
     }
 
+    //  BRISANJE
+
+    private function brisanjeSmjene(){
+        $this->pregledSmjene(false);
+        $rb= Pomocno::brojRaspon('Odaberite smjenu: ',1,count($this->smjene));
+        $rb--;
+        array_splice($this->smjene,$rb,1);
+        echo '================' . PHP_EOL;
+        echo 'SMJENA OBRISANA!' . PHP_EOL;
+        echo '================' . PHP_EOL;
+        $this->smjenaIzbornik();
+    }
 
     //============================================//
     //  PROIZVODI - PREGLED/UNOS/IZMJENA/BRISANJE //
     //============================================//
+
+    //PREGLED
 
     private function pregledProizvoda($prikaziProizvode = true){
         echo '============================' . PHP_EOL;
@@ -302,6 +337,7 @@ class Start{
         }
     }
 
+    //  UNOS
 
     private function unosProizvoda(){
         $p=new stdClass();
@@ -314,6 +350,7 @@ class Start{
         $this->proizvodIzbornik();
     }
 
+    //  IZMJENA
 
     private function izmjenaProizvoda(){
         $this->pregledProizvoda(false);
@@ -330,6 +367,19 @@ class Start{
         echo 'PROIZVOD IZMJENJEN!' . PHP_EOL;
         echo '===================' . PHP_EOL;
 
+        $this->proizvodIzbornik();
+    }
+
+    //  BRISANJE
+
+    private function brisanjeProizvoda(){
+        $this->pregledProizvoda(false);
+        $rb = Pomocno::brojRaspon('Odaberite proizvod: ',1,count($this->proizvodi));
+        $rb--;
+        array_splice($this->proizvodi,$rb,1);
+        echo '=================' . PHP_EOL;
+        echo 'PROIZVOD OBRISAN!' . PHP_EOL;
+        echo '=================' . PHP_EOL;
         $this->proizvodIzbornik();
     }
 
