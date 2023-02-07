@@ -236,16 +236,16 @@ class Start{
     //  PREGLED
 
     private function pregledRadnika($prikaziradnike = true){
-        echo '============================' . PHP_EOL;
+        echo '============' . PHP_EOL;
         echo 'Svi radnici:' . PHP_EOL;
-        echo '============================' . PHP_EOL;
+        echo '============' . PHP_EOL;
         $rb=1;
         foreach ($this->radnici as $radnik){
             echo $rb++ . '. ' . $radnik->ime . ' ' . $radnik->prezime . PHP_EOL;
         }
-        echo '============================' . PHP_EOL;
+        echo '============' . PHP_EOL;
         if($prikaziradnike){
-            $this->radnikIzbornik();
+        $this->radnikIzbornik();
         }
     }
 
@@ -312,14 +312,14 @@ class Start{
     //  PREGLED
 
     private function pregledSmjene($prikazismjene = true){
-        echo '============================' . PHP_EOL;
+        echo '===========' . PHP_EOL;
         echo 'Sve smjene:' . PHP_EOL;
-        echo '============================' . PHP_EOL;
+        echo '===========' . PHP_EOL;
         $rb=1;
         foreach($this->smjene as $smjena){
             echo $rb++ . '. ' . $smjena->naziv . PHP_EOL;
         }
-        echo '============================' . PHP_EOL;
+        echo '===========' . PHP_EOL;
         if($prikazismjene){
             $this->smjenaIzbornik();
         }
@@ -379,14 +379,14 @@ class Start{
     //PREGLED
 
     private function pregledProizvoda($prikaziProizvode = true){
-        echo '============================' . PHP_EOL;
+        echo '==========' . PHP_EOL;
         echo 'Proizvodi:' . PHP_EOL;
-        echo '============================' . PHP_EOL;
+        echo '==========' . PHP_EOL;
         $rb=1;
         foreach($this->proizvodi as $proizvod){
             echo $rb++ . '. ' . $proizvod->naziv . PHP_EOL;
         }
-        echo '============================' . PHP_EOL;
+        echo '==========' . PHP_EOL;
         if($prikaziProizvode){
             $this->proizvodIzbornik();
         }
