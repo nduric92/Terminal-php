@@ -5,13 +5,13 @@ include_once 'Pomocno.php';
 class Start{
 
     private $radnici;
-    private $smjene;
+    private $smjena;
     private $proizvodi;
     private $dev;
 
     public function __construct($argc, $argv){
         $this -> radnici=[];
-        $this -> smjene=[];
+        $this -> smjena=[];
         $this -> proizvodi=[];
         if($argc>1 && $argv[1]=='dev'){
             $this -> testPodaci();
@@ -28,7 +28,10 @@ class Start{
     //===================//
 
     private function pozdravnaPoruka(){
+        echo '                                       ' . PHP_EOL;
+        echo '=======================================' . PHP_EOL;
         echo 'Dobrodosli u Product Plast terminal APP' . PHP_EOL;
+        echo '=======================================' . PHP_EOL;
     }
 
     //==================//
@@ -88,7 +91,14 @@ class Start{
     private function opcijaRadnikIzbornik(){
         switch(Pomocno::brojRaspon('Odaberi opciju: ',1,5)){
             case 1:
-                $this->pregledRadnika();
+                if(count($this->radnici)===0){
+                    echo '===================================' . PHP_EOL;
+                    echo 'Nema unesenih radnika u aplikaciji!' . PHP_EOL;
+                    echo '===================================' . PHP_EOL;
+                    $this->radnikIzbornik();
+                }else{
+                    $this->pregledRadnika();
+                }                
                 break;
             case 2:
                 $this->unosdRadnika();
@@ -141,13 +151,20 @@ class Start{
     private function opcijaSmjenaIzbornik(){
         switch(Pomocno::brojRaspon('Odaberi opciju: ',1,5)){
             case 1:
-                $this->pregledSmjene();
+                if(count($this->smjena)===0){
+                    echo '==================================' . PHP_EOL;
+                    echo 'Nema unesenih smjena u aplikaciji!' . PHP_EOL;
+                    echo '==================================' . PHP_EOL;
+                    $this->smjenaIzbornik();
+                }else{
+                    $this->pregledSmjene();
+                }                
                 break;
             case 2:
                 $this->unosSmjene();
                 break;
             case 3:
-                if(count($this->smjene)===0){
+                if(count($this->smjena)===0){
                     echo '==================================' . PHP_EOL;
                     echo 'Nema unesenih smjena u aplikaciji!' . PHP_EOL;
                     echo '==================================' . PHP_EOL;
@@ -157,7 +174,7 @@ class Start{
                 }                
                 break;
             case 4:
-                if(count($this->smjene)===0){
+                if(count($this->smjena)===0){
                     echo '==================================' . PHP_EOL;
                     echo 'Nema unesenih smjena u aplikaciji!' . PHP_EOL;
                     echo '==================================' . PHP_EOL;
@@ -195,7 +212,14 @@ class Start{
     private function opcijaProizvodIzbornik(){
         switch(Pomocno::brojRaspon('Odaberi opciju: ',1,5)){
             case 1:
-                $this->pregledProizvoda();
+                if(count($this->proizvodi)===0){
+                    echo '=====================================' . PHP_EOL;
+                    echo 'Nema unesenih proizvoda u aplikaciji!' . PHP_EOL;
+                    echo '=====================================' . PHP_EOL;
+                    $this->proizvodIzbornik();
+                }else{
+                    $this->pregledProizvoda();
+                }                
                 break;
             case 2:
                 $this->unosProizvoda();
@@ -214,7 +238,7 @@ class Start{
                 if(count($this->proizvodi)===0){
                     echo '=====================================' . PHP_EOL;
                     echo 'Nema unesenih proizvoda u aplikaciji!' . PHP_EOL;
-                    ECHO '=====================================' . PHP_EOL;
+                    echo '=====================================' . PHP_EOL;
                     $this->proizvodIzbornik();
                 }else{
                     $this->brisanjeProizvoda();
@@ -316,7 +340,7 @@ class Start{
         echo 'Sve smjene:' . PHP_EOL;
         echo '===========' . PHP_EOL;
         $rb=1;
-        foreach($this->smjene as $smjena){
+        foreach($this->smjena as $smjena){
             echo $rb++ . '. ' . $smjena->naziv . PHP_EOL;
         }
         echo '===========' . PHP_EOL;
@@ -331,7 +355,7 @@ class Start{
         $s=new stdClass();
         $s->naziv = Pomocno::unosTeksta('Unesite naziv smjene: ');
         $s->trajanje = Pomocno::unosDecimalnogBroja('Unesite broj radnih sati u tjednu:');
-        $this->smjene[]=$s;
+        $this->smjena[]=$s;
         echo '==============' . PHP_EOL;
         echo 'SMJENA DODANA!' . PHP_EOL;
         echo '==============' . PHP_EOL;
@@ -342,14 +366,14 @@ class Start{
 
     private function izmjenaSmjene(){
         $this->pregledSmjene(false);
-        $rb=Pomocno::brojRaspon('Odaberite smjenu: ',1,count($this->smjene));
+        $rb=Pomocno::brojRaspon('Odaberite smjenu: ',1,count($this->smjena));
         $rb--;
-        $this->smjene[$rb]->naziv = Pomocno::unosTeksta('Unesite ispravak naziva smjene (' .
-        $this->smjene[$rb]->naziv
-        .'): ', $this->smjene[$rb]->naziv);
-        $this->smjene[$rb]->trajanje = Pomocno::unosDecimalnogBroja('Unesite ispravak broja sati u tjednu (' .
-        $this->smjene[$rb]->trajanje
-        .'): ', $this->smjene[$rb]->trajanje);
+        $this->smjena[$rb]->naziv = Pomocno::unosTeksta('Unesite ispravak naziva smjene (' .
+        $this->smjena[$rb]->naziv
+        .'): ', $this->smjena[$rb]->naziv);
+        $this->smjena[$rb]->trajanje = Pomocno::unosDecimalnogBroja('Unesite ispravak broja sati u tjednu (' .
+        $this->smjena[$rb]->trajanje
+        .'): ', $this->smjena[$rb]->trajanje);
         
         echo '==================' . PHP_EOL;
         echo 'SMJENA IZMJENJENA!' . PHP_EOL;
@@ -363,9 +387,9 @@ class Start{
 
     private function brisanjeSmjene(){
         $this->pregledSmjene(false);
-        $rb= Pomocno::brojRaspon('Odaberite smjenu: ',1,count($this->smjene));
+        $rb= Pomocno::brojRaspon('Odaberite smjenu: ',1,count($this->smjena));
         $rb--;
-        array_splice($this->smjene,$rb,1);
+        array_splice($this->smjena,$rb,1);
         echo '================' . PHP_EOL;
         echo 'SMJENA OBRISANA!' . PHP_EOL;
         echo '================' . PHP_EOL;
@@ -436,6 +460,47 @@ class Start{
         echo 'PROIZVOD OBRISAN!' . PHP_EOL;
         echo '=================' . PHP_EOL;
         $this->proizvodIzbornik();
+    }
+
+    private function testPodaci(){
+        $this->radnici[]=$this->kreirajRadnika('Nemanja','Djuric',12345,600.49);
+        $this->radnici[]=$this->kreirajRadnika('Danijela','Nikic',13245,600.49);
+        $this->radnici[]=$this->kreirajRadnika('Jelena','Sljokic',54321,600.49);
+        $this->radnici[]=$this->kreirajRadnika('Miroslav','Mirosavljevic',13542,600.49);
+    
+        $this->smjena[]=$this->kreirajSmjenu("Igor's",37.5);
+        $this->smjena[]=$this->kreirajSmjenu("Tobias's",37.5);
+        $this->smjena[]=$this->kreirajSmjenu("Adrian's",37.5);
+    
+        $this->proizvodi[]=$this->kreirajProizvod('VME 242','Volvo');
+        $this->proizvodi[]=$this->kreirajProizvod('VME 389','Volvo');
+        $this->proizvodi[]=$this->kreirajProizvod('VME 186','Volvo');
+        $this->proizvodi[]=$this->kreirajProizvod('VME 132','Volvo');
+        $this->proizvodi[]=$this->kreirajProizvod('VME 415','Volvo');
+        $this->proizvodi[]=$this->kreirajProizvod('VME 228','Volvo');
+    }
+    
+    private function kreirajRadnika($ime, $prezime, $id, $placa){
+        $r = new stdClass();
+        $r->ime=$ime;
+        $r->prezime=$prezime;
+        $r->id=$id;
+        $r->placa=$placa;
+        return $r;
+    }
+    
+    private function kreirajSmjenu($naziv, $sati,){
+        $s= new stdClass();
+        $s->naziv=$naziv;
+        $s->sati=$sati;
+        return $s;
+    }
+    
+    private function kreirajProizvod($naziv, $narucitelj){
+        $p= new stdClass();
+        $p->naziv=$naziv;
+        $p->narucitelj=$narucitelj;
+        return $p;
     }
 
 }
