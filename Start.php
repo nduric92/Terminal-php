@@ -72,11 +72,11 @@ class Start{
         echo '            ' . PHP_EOL;
         echo 'WORKERS MENU' . PHP_EOL;
         echo '============' . PHP_EOL;
-        echo '1. Overview workers' . PHP_EOL;
-        echo '2. Insert worker' . PHP_EOL;
-        echo '3. Change worker' . PHP_EOL;
-        echo '4. Delete worker' . PHP_EOL;
-        echo '5. Back to - Main Menu' . PHP_EOL;
+        echo '1.    Overview workers' . PHP_EOL;
+        echo '2.    Insert worker' . PHP_EOL;
+        echo '3.    Change worker' . PHP_EOL;
+        echo '4.    Delete worker' . PHP_EOL;
+        echo '5.    Back to - Main Menu' . PHP_EOL;
         echo '               ' . PHP_EOL;
         $this->optionWorkersMenu();
     }
@@ -90,11 +90,11 @@ class Start{
                     echo '===============================' . PHP_EOL;
                     $this->workersMenu();
                 }else{
-                    $this->overviwWorkers();
+                    $this->overviewWorkers();
                 }                
                 break;
             case 2:
-                $this->insertWorker();
+                $this->insertWorkers();
                 break;            
             case 3:
                 if(count($this->workers)===0){
@@ -150,11 +150,11 @@ class Start{
                     echo '==============================' . PHP_EOL;
                     $this->shiftsMenu();
                 }else{
-                    $this->overviwShifts();
+                    $this->overviewShifts();
                 }                
                 break;
             case 2:
-                $this->insertShift();
+                $this->insertShifts();
                 break;            
             case 3:
                 if(count($this->shifts)===0){
@@ -263,6 +263,125 @@ class Start{
             $this->workersMenu();
         }
     }
+
+    private function selectWorkers($showworkers = true){
+        echo '============' . PHP_EOL;
+        echo 'All workers:' . PHP_EOL;
+        echo '============' . PHP_EOL;
+        $on=1;
+        foreach ($this->workers as $worker){
+            echo $on++ . '. ' . $worker->name . ' ' . $worker->lastname . PHP_EOL;
+        }
+        echo '============' . PHP_EOL;
+        if($showworkers){
+        }
+    }
+
+    //  INSERTS
+
+    private function insertWorkers(){
+        $w=new stdClass();
+        $w->name = Additional::insertText('Insert workers name:');
+        $w->lastname = Additional::insertText('Insert workers last name:');
+        $w->id = Additional::insertNumber('Insert workers id:');
+        $w->salary = Additional::insertDecimalNumber('Insert recommended salary:');
+        $this->workers[]=$w;
+        echo '============' . PHP_EOL;
+        echo 'WORKER ADDED' . PHP_EOL;
+        echo '============' . PHP_EOL;
+        $this->workersMenu();
+    }
+
+    //=========================================//
+    //  SHIFTS - OVERVIEW/INSERT/CHANGE/DELETE //
+    //=========================================//
+
+    //  OVERVIEW
+
+    private function overviewShifts($showshifts = true){
+        echo '===========' . PHP_EOL;
+        echo 'All Shifts:' . PHP_EOL;
+        echo '===========' . PHP_EOL;
+        $on=1;
+        foreach ($this->shifts as $shift){
+            echo $on++ . '. ' . $shift->name . ' ' . $shift->duration . PHP_EOL;
+            $onw=0;
+            foreach($shift->workers as $w){
+                echo "\t" . ++$onw . '. ' . $w->name . ' ' . $w->lastname . PHP_EOL;
+            }
+        }
+        echo '============' . PHP_EOL;
+        if($showshifts){   
+            $this->shiftsMenu();
+        }
+    }
+
+    //  INSERTS
+
+    private function insertShifts(){
+        $s=new stdClass();
+        $s->name = Additional::insertText('Insert shift name: ');
+        $s->duration = Additional::insertDecimalNumber('Insert number of workin hours in a week: ');
+
+        $s->workers=[];
+        echo '                       ' . PHP_EOL;
+        echo 'Insert workers in shift' . PHP_EOL;
+        echo '-----------------------' . PHP_EOL;
+        if(Additional::rangeNumber('1 - Insert,  0 - abort: ',0,1)===1){
+            while(true){
+                $this->selectWorkers();
+                $on=Additional::rangeNumber('Select workers: ',1,count($this->workers));
+                $on--;
+                if(!in_array($this->workers[$on],$s->workers)){
+                    $s->workers[] = $this->workers[$on];
+                }else{
+                    echo 'Selected worger already exists in shift' . PHP_EOL;
+                }
+                if(Additional::rangeNumber('1 - continue, 0 - abbort: ',0,1)===0){
+                    break;
+                }
+            }
+        }
+        $this->shifts[]=$s;
+        echo '============' . PHP_EOL;
+        echo 'SHIFT ADDED!' . PHP_EOL;
+        echo '============' . PHP_EOL;
+        $this->shiftsMenu();
+    }
+
+    //===========================================//
+    //  PRODUCTS - OVERVIEW/INSERT/CHANGE/DELETE //
+    //===========================================//
+
+    //  OVERVIEW
+
+    private function overviewProducts($showproducts = true){
+        echo '===========' . PHP_EOL;
+        echo 'All Shifts:' . PHP_EOL;
+        echo '===========' . PHP_EOL;
+        $on=1;
+        foreach ($this->product as $product){
+            echo $on++ . '. ' . $product->name . ' ' . $product->customer . PHP_EOL;
+        }
+        echo '============' . PHP_EOL;
+        if($showproducts){   
+            $this->productsMenu();
+        }
+    }
+
+    //  INSERTS
+
+    private function insertProducts(){
+        $p=new stdClass();
+        $p->name = Additional::insertText('Insert products name: ');
+        $p->customer = Additional::insertText('Insert products customer: ');
+        $this->products[]=$p;
+        echo '=============' . PHP_EOL;
+        echo 'PRODUCT ADDED' . PHP_EOL;
+        echo '=============' . PHP_EOL;
+        $this->productsMenu();
+    }
+
 
 
 

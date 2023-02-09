@@ -370,17 +370,19 @@ class Pocetak{
         $s->radnici=[];
         echo '                      ' . PHP_EOL;
         echo 'Unesi radnike smjene: ' . PHP_EOL;
-        while(true){
-            $this->odabirRadnika();
-            $rb = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->radnici));
-            $rb--;
-            if(!in_array($this->radnici[$rb],$s->radnici)){
-                $s->radnici[] = $this->radnici[$rb];
-            }else{
-                echo 'Odabrani radnik postoji u smjeni!' . PHP_EOL;
-            }
-            if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
-                break;
+        if(Pomocno::brojRaspon('1 - Unos,  0 - prekid: ',0,1)===1){
+            while(true){
+                $this->odabirRadnika();
+                $rb = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->radnici));
+                $rb--;
+                if(!in_array($this->radnici[$rb],$s->radnici)){
+                    $s->radnici[] = $this->radnici[$rb];
+                }else{
+                    echo 'Odabrani radnik postoji u smjeni!' . PHP_EOL;
+                }
+                if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
+                    break;
+                }
             }
         }
         
@@ -492,9 +494,9 @@ class Pocetak{
         $p->naziv = Pomocno::unosTeksta('Unesite naziv proizvoda: ');
         $p->narucitelj = Pomocno::unosTeksta('Unesite naziv narucitelja:');
         $this->proizvodi[]=$p;
-        ECHO '===============' . PHP_EOL;
+        echo '===============' . PHP_EOL;
         echo 'PROIZVOD DODAN!' . PHP_EOL;
-        ECHO '===============' . PHP_EOL;
+        echo '===============' . PHP_EOL;
         $this->proizvodIzbornik();
     }
 
