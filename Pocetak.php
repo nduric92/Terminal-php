@@ -2,7 +2,7 @@
 
 include_once 'Pomocno.php';
 
-class Start{
+class Pocetak{
 
     private $radnici;
     private $smjena;
@@ -534,4 +534,4 @@ class Start{
 
 }
 
-new Start();
+new Pocetak();
