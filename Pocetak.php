@@ -9,16 +9,10 @@ class Start{
     private $proizvodi;
     private $dev;
 
-    public function __construct($argc, $argv){
+    public function __construct(){
         $this -> radnici=[];
         $this -> smjena=[];
         $this -> proizvodi=[];
-        if($argc>1 && $argv[1]=='dev'){
-            $this -> testPodaci();
-            $this -> dev=true;
-        }else{
-            $this->dev=false;
-        }
         $this->pozdravnaPoruka();
         $this->glavniIzbornik();
     }
@@ -354,7 +348,11 @@ class Start{
         echo '===========' . PHP_EOL;
         $rb=1;
         foreach($this->smjena as $s){
-            echo $rb++ . '. ' . $s->naziv . PHP_EOL;            
+            echo $rb++ . '. ' . $s->naziv . PHP_EOL;
+            $rbr=0;
+            foreach($s->radnici as $r){
+                echo "\t" . ++$rbr . '. ' . $r->ime . ' ' . $r->prezime . PHP_EOL;
+            }         
         }
 
         echo '===========' . PHP_EOL;
@@ -534,47 +532,6 @@ class Start{
         $this->proizvodIzbornik();
     }
 
-    private function testPodaci(){
-        $this->radnici[]=$this->kreirajRadnika('Nemanja','Djuric',12345,600.49);
-        $this->radnici[]=$this->kreirajRadnika('Danijela','Nikic',13245,600.49);
-        $this->radnici[]=$this->kreirajRadnika('Jelena','Sljokic',54321,600.49);
-        $this->radnici[]=$this->kreirajRadnika('Miroslav','Mirosavljevic',13542,600.49);
-    
-        $this->smjena[]=$this->kreirajSmjenu("Igor's",37.5);
-        $this->smjena[]=$this->kreirajSmjenu("Tobias's",37.5);
-        $this->smjena[]=$this->kreirajSmjenu("Adrian's",37.5);
-    
-        $this->proizvodi[]=$this->kreirajProizvod('VME 242','Volvo');
-        $this->proizvodi[]=$this->kreirajProizvod('VME 389','Volvo');
-        $this->proizvodi[]=$this->kreirajProizvod('VME 186','Volvo');
-        $this->proizvodi[]=$this->kreirajProizvod('VME 132','Volvo');
-        $this->proizvodi[]=$this->kreirajProizvod('VME 415','Volvo');
-        $this->proizvodi[]=$this->kreirajProizvod('VME 228','Volvo');
-    }
-    
-    private function kreirajRadnika($ime, $prezime, $id, $placa){
-        $r = new stdClass();
-        $r->ime=$ime;
-        $r->prezime=$prezime;
-        $r->id=$id;
-        $r->placa=$placa;
-        return $r;
-    }
-    
-    private function kreirajSmjenu($naziv, $sati,){
-        $s= new stdClass();
-        $s->naziv=$naziv;
-        $s->sati=$sati;
-        return $s;
-    }
-    
-    private function kreirajProizvod($naziv, $narucitelj){
-        $p= new stdClass();
-        $p->naziv=$naziv;
-        $p->narucitelj=$narucitelj;
-        return $p;
-    }
-
 }
 
-new Start($argc,$argv);
+new Start();
