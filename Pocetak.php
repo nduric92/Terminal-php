@@ -56,9 +56,9 @@ class Pocetak{
                 $this->proizvodIzbornik();
                 break;
             case 4:
-                ECHO '===========' . PHP_EOL;
+                echo '===========' . PHP_EOL;
                 echo 'DOVIDJENJA!' . PHP_EOL;
-                ECHO '===========' . PHP_EOL;
+                echo '===========' . PHP_EOL;
                 break;
             default:
                 $this->glavniIzbornik();
@@ -199,7 +199,6 @@ class Pocetak{
         echo '4. Brisanje proizvoda' . PHP_EOL;
         echo '5. Povratak - Glavni izbornik' . PHP_EOL;
         echo '               ' . PHP_EOL;
-
         $this->opcijaProizvodIzbornik();
     }
 
