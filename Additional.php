@@ -43,13 +43,26 @@ class Additional{
             $i=readline($poruka);
             $i=(int)$i;
             if($i<=0){
-                echo 'Broj mora biti veci od nula' . PHP_EOL;
+                echo 'Number has to be higher then 0' . PHP_EOL;
                 continue;
             }
             return $i;
         }
     }
 
+    public static function rangeNumber2($massage, $min, $max){
+        while(true){
+            $i=readline($massage);
+            $i=(int)$i;
+            if($i<$min || $i>$max){
+                echo ' ' . PHP_EOL;
+                echo 'Worker aleredy deleted!' . PHP_EOL;
+                echo ' ' . PHP_EOL;
+                break;
+            }
+            return $i;
+        }        
+    }
 
 
 
