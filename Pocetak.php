@@ -370,18 +370,26 @@ class Pocetak{
         $s->radnici=[];
         echo '                      ' . PHP_EOL;
         echo 'Unesi radnike smjene: ' . PHP_EOL;
+        echo '----------------------' . PHP_EOL;
         if(Pomocno::brojRaspon('1 - Unos,  0 - prekid: ',0,1)===1){
-            while(true){
-                $this->odabirRadnika();
-                $rb = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->radnici));
-                $rb--;
-                if(!in_array($this->radnici[$rb],$s->radnici)){
-                    $s->radnici[] = $this->radnici[$rb];
-                }else{
-                    echo 'Odabrani radnik postoji u smjeni!' . PHP_EOL;
-                }
-                if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
-                    break;
+            if(count($this->radnici)===0){
+                echo '----------------------------------' . PHP_EOL;
+                echo 'Nema unesenih radnika u aplikaciji' . PHP_EOL;
+                echo '----------------------------------' . PHP_EOL;
+            }else{
+                while(true){
+                    $this->odabirRadnika();
+                    $rb = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->radnici));
+                    $rb--;
+                    if(!in_array($this->radnici[$rb],$s->radnici)){
+                        $s->radnici[] = $this->radnici[$rb];
+                    }else{
+                        echo ' ' . PHP_EOL;
+                        echo 'Odabrani radnik postoji u smjeni!' . PHP_EOL;
+                    }
+                    if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
+                        break;
+                    }
                 }
             }
         }
@@ -406,20 +414,35 @@ class Pocetak{
         $this->smjena[$rb]->trajanje
         .'): ', $this->smjena[$rb]->trajanje);
 
-        while(true){
-            echo '                              ' . PHP_EOL;
-            echo 'Dodavanje radnika na smjenu:  ' . PHP_EOL;
-            echo '                              ' . PHP_EOL;
-            $this->odabirRadnika();
-            $rbr = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->radnici));
-            $rbr--;
-            if(!in_array($this->radnici[$rbr],$this->smjena[$rb]->radnici)){
-                $this->smjena[$rb]->radnici[]=$this->radnici[$rbr];
+        echo '                           ' . PHP_EOL;
+        echo '===========================' . PHP_EOL;
+        echo 'Dodavanje radnika na smjenu' . PHP_EOL;
+        echo '===========================' . PHP_EOL;
+
+        if(Pomocno::brojRaspon('1 - Dodaj, 0 - Odustani: ',0,1)===1){
+            if(count($this->radnici)===0){
+                echo '-------------------------' . PHP_EOL;
+                echo 'Nema radnika u aplikaciji' . PHP_EOL;
+                echo '-------------------------' . PHP_EOL;
             }else{
-                echo 'Odabrani radnik postoji u smjeni!' . PHP_EOL;
-            }
-            if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
-                break;
+                while(true){
+                    echo '                             ' . PHP_EOL;
+                    echo '=============================' . PHP_EOL;
+                    echo 'Dodavanje radnika na smjenu: ' . PHP_EOL;
+                    echo '=============================' . PHP_EOL;
+                    $this->odabirRadnika();
+                    $rbr = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->radnici));
+                    $rbr--;
+                    if(!in_array($this->radnici[$rbr],$this->smjena[$rb]->radnici)){
+                        $this->smjena[$rb]->radnici[]=$this->radnici[$rbr];
+                    }else{
+                        echo ' ' . PHP_EOL;
+                        echo 'Odabrani radnik postoji u smjeni!' . PHP_EOL;
+                    }
+                    if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
+                        break;
+                    }
+                }
             }
         }
 
@@ -429,22 +452,27 @@ class Pocetak{
         echo '=========================' . PHP_EOL;
         
         if(Pomocno::brojRaspon('1 - Brisanje,  0 - prekid: ',0,1)===1){
-            while(true){
-                echo '                         ' . PHP_EOL;
-                echo 'Brisanje radnika smjene: ' . PHP_EOL;
-                echo '                         ' . PHP_EOL;
-                $this->odabirRadnika($this->smjena[$rb]->radnici);
-                $rbr = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->smjena[$rb]->radnici));
-                $rbr--;
-                array_splice($this->smjena[$rb]->radnici,$rbr,1);
-        
-                if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
-                    break;
+            if(count($this->radnici)===0){
+                echo '---------------------' . PHP_EOL;
+                echo 'Nema radnika u smjeni' . PHP_EOL;
+                echo '---------------------' . PHP_EOL;
+            }else{
+                while(true){
+                    echo '                         ' . PHP_EOL;
+                    echo '=========================' . PHP_EOL;
+                    echo 'Brisanje radnika smjene: ' . PHP_EOL;
+                    echo '=========================' . PHP_EOL;
+                    $this->odabirRadnika($this->smjena[$rb]->radnici);
+                    $rbr = Pomocno::brojRaspon2('Odaberi radnika: ',1,count($this->smjena[$rb]->radnici));
+                    $rbr--;
+                    array_splice($this->smjena[$rb]->radnici,$rbr,1);
+            
+                    if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
+                        break;
+                    }
                 }
             }
         }
-        
-          
          
         echo '==================' . PHP_EOL;
         echo 'SMJENA IZMJENJENA!' . PHP_EOL;
