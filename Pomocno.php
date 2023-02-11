@@ -5,6 +5,11 @@ class Pomocno{
     public static function brojRaspon($poruka,$min,$max){
         while(true){
             $i=readline($poruka);
+            $i=trim($i);
+            if(strlen($i)===0){
+                echo 'Obavezan unos' . PHP_EOL;
+                continue;
+            }
             $i=(int)$i;
             if($i<$min || $i>$max){
                 echo 'Unos mora biti izmedju ' . $min . ' i ' . $max . PHP_EOL;

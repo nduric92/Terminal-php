@@ -5,6 +5,11 @@ class Additional{
     public static function rangeNumber($massage, $min, $max){
         while(true){
             $i=readline($massage);
+            $i=trim($i);
+            if(strlen($i)===0){
+                echo 'mandatory entry' . PHP_EOL;
+                continue;
+            }
             $i=(int)$i;
             if($i<$min || $i>$max){
                 echo 'Insert has to be between ' . $min . ' and ' . $max . PHP_EOL;
