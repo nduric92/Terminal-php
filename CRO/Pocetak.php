@@ -679,13 +679,13 @@ class Pocetak{
         echo '==================' . PHP_EOL;
         $rb=1;
         foreach($this->proizvodniciklus as $pc){
-            echo $rb++ . '. ' . $pc->dan . ' - Kolicina: ('. $pc->kolicina . ')' .  PHP_EOL;
-            $rbr=0;
-            foreach($pc->radnici as $r){
-                echo "\t" . ++$rbr . '. ' . $r->ime . ' ' . $r->prezime . ' - ID: (' . $r->id .')' . PHP_EOL;
-            }    
+            echo $rb++ . '. ' . $pc->dan . ' - Kolicina: ('. $pc->kolicina . ')' .  PHP_EOL;                
             foreach($pc->proizvodi as $p){
                 echo "\t" . ++$rb . '. ' . $p->naziv . ' - Narucitelj: (' . $p->narucitelj . ')' . PHP_EOL;
+                $rbr=0;
+                foreach($pc->radnici as $r){
+                    echo "\t" . ++$rbr . '. ' . $r->ime . ' ' . $r->prezime . ' - ID: (' . $r->id .')' . PHP_EOL;
+                }
             }     
         }
 
