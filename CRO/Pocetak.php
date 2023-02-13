@@ -443,9 +443,6 @@ class Pocetak{
         $s->naziv = Pomocno::unosTeksta('Unesite naziv smjene: ');
         $s->trajanje = Pomocno::unosDecimalnogBroja('Unesite broj radnih sati u tjednu:');
         
-        
-
-
         $s->radnici=[];
         echo '                      ' . PHP_EOL;
         echo 'Unesi radnike smjene: ' . PHP_EOL;
@@ -951,10 +948,17 @@ class Pocetak{
         $this->pregledProizvodnihCiklusa(false);
         $rb= Pomocno::brojRaspon('Odaberite proizvodni ciklus za brisanje: ',1,count($this->proizvodniciklus));
         $rb--;
-        array_splice($this->proizvodniciklus,$rb,1);
-        echo '==========================' . PHP_EOL;
-        echo 'PROIZVODNI CIKLUS OBRISAN!' . PHP_EOL;
-        echo '==========================' . PHP_EOL;
+        echo ' ' . PHP_EOL;
+        echo '-------------------------------------------------------' . PHP_EOL;
+        echo 'Jeste li sigurni da zelite obrisati proizvodni ciklus? ' . PHP_EOL;
+        echo '-------------------------------------------------------' . PHP_EOL;
+        echo ' ' . PHP_EOL;
+        if(Pomocno::brojRaspon('1 - Obrisi, 0 - Odustani: ',0,1)===1){
+            array_splice($this->proizvodniciklus,$rb,1);
+            echo '==========================' . PHP_EOL;
+            echo 'PROIZVODNI CIKLUS OBRISAN!' . PHP_EOL;
+            echo '==========================' . PHP_EOL;
+        }
         $this->proizvodniCiklusIzbornik();
     }
 
