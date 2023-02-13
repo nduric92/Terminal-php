@@ -82,9 +82,7 @@ class Pomocno{
             }
             return $s;
         }
-    }
-
-    
+    }    
 
     public static function unosDatuma($poruka){
         while (true){
@@ -93,28 +91,23 @@ class Pomocno{
     
             $g=(int)substr($p,0,4);
              if ($g<2023 || $g>2030){
-                    echo 'Broj godina mora biti između 2023 i 2030 ' . PHP_EOL;
-                    continue;
+                echo 'Broj godina mora biti između 2023 i 2030 ' . PHP_EOL;
+                continue;
              }  
     
             $m=(int)substr($p,5,2);
             if ($m>12 || $m<1){
                 echo 'Broj mjeseci mora biti između 1 i 12 ' . PHP_EOL;
                 continue;
-            }  
-            
+            }              
     
             $d=(int)substr($p,8,2);
             if ($d>31 || $d<1){
                 echo 'Broj dana mora biti između 1 i 31 ' . PHP_EOL;
                 continue;
-         }  
-    
-            
-                return $p;
-        }
-    
-    
+            }            
+            return $p;
+        }    
     }
 
 }
