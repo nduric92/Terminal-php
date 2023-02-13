@@ -7,11 +7,13 @@ class Start{
     private $workers;
     private $shifts;
     private $products;
+    private $production;
 
     public function __construct(){
         $this -> workers=[];
         $this -> shifts=[];
         $this -> products=[];
+        $this -> production=[];
         $this -> helloMassage();
         $this -> mainMenu();
     }
@@ -38,7 +40,8 @@ class Start{
         echo '1.    Workers' . PHP_EOL;
         echo '2.    Shifts' . PHP_EOL;
         echo '3.    Products' . PHP_EOL;
-        echo '4.    EXIT the APP' . PHP_EOL;
+        echo '4.    Production' . PHP_EOL;
+        echo '5.    EXIT the APP' . PHP_EOL;
         echo '              ' . PHP_EOL;
         $this->optionMainMenu();
     }
@@ -55,6 +58,9 @@ class Start{
                 $this->productsMenu();
                 break;
             case 4:
+                $this->productionMenu();
+                break;
+            case 5:
                 echo '==============' . PHP_EOL;
                 echo '  GOOD BYE!   ' . PHP_EOL;
                 echo '==============' . PHP_EOL;
@@ -244,6 +250,66 @@ class Start{
         }
     }
 
+    //==================//
+    //  PRODUCTION MENU //
+    //==================//
+
+    private function productionMenu(){
+        echo '               ' . PHP_EOL;
+        echo 'PRODUCTION MENU' . PHP_EOL;
+        echo '===============' . PHP_EOL;
+        echo '1.    Overview production' . PHP_EOL;
+        echo '2.    Insert productions cycle' . PHP_EOL;
+        echo '3.    Change productions cycle' . PHP_EOL;
+        echo '4.    Delete productions cycle' . PHP_EOL;
+        echo '5.    Back to - Main Menu' . PHP_EOL;
+        echo '               ' . PHP_EOL;
+        $this->optionProductionMenu();
+    }
+
+    private function optionProductionMenu(){
+        switch(Additional::rangeNumber('Select option: ',1,5)){
+            case 1:
+                if(count($this->production)===0){
+                    echo '=========================================' . PHP_EOL;
+                    echo 'There is no production cycles in the APP!' . PHP_EOL;
+                    echo '=========================================' . PHP_EOL;
+                    $this->productionMenu();
+                }else{
+                    $this->overviewProduction();
+                }                
+                break;
+            case 2:
+                $this->insertProduction();
+                break;
+            case 3:
+                if(count($this->production)===0){
+                    echo '================================' . PHP_EOL;
+                    echo 'There is no products in the APP!' . PHP_EOL;
+                    echo '================================' . PHP_EOL;
+                    $this->productionMenu();
+                }else{
+                    $this->changeProduction();
+                }
+                break;
+            case 4:
+                if(count($this->production)===0){
+                    echo '================================' . PHP_EOL;
+                    echo 'There is no products in the APP!' . PHP_EOL;
+                    echo '================================' . PHP_EOL;
+                    $this->productionMenu();
+                }else{
+                    $this->deleteProduction();
+                }                
+                break;
+            case 5:
+                $this->mainMenu();
+                break;
+            default:
+            $this -> productionMenu();
+        }
+    }
+
     //==========================================//
     //  WORKERS - OVERVIEW/INSERT/CHANGE/DELETE //
     //==========================================//
@@ -281,10 +347,12 @@ class Start{
 
     private function insertWorkers(){
         $w=new stdClass();
+        $w->id = Additional::insertNumber('Insert workers ID:');
         $w->name = Additional::insertText('Insert workers name:');
         $w->lastname = Additional::insertText('Insert workers last name:');
-        $w->id = Additional::insertNumber('Insert workers id:');
         $w->salary = Additional::insertDecimalNumber('Insert recommended salary (EUR):');
+        $w->contractnumber = Additional::insertNumber('Insert workers contract number:');
+        $w->iban = Additional::insertNumber('Insert workers IBAN:');
         $this->workers[]=$w;
         echo '============' . PHP_EOL;
         echo 'WORKER ADDED' . PHP_EOL;
@@ -298,18 +366,25 @@ class Start{
         $this->overviewWorkers(false);
         $on=Additional::rangeNumber('Select worker: ',1,count($this->workers));
         $on--;
+        $this->workers[$on]->id = Additional::insertNumber('ID correction (' .
+        $this->workers[$on]->id
+        .'): ', $this->workers [$on]->id);
         $this->workers[$on]->name = Additional::insertText('Insert the name correction (' .
         $this->workers[$on]->name
         .'): ', $this->workers [$on]->name);
         $this->workers[$on]->lastname = Additional::insertText('Insert the lastname correction (' .
         $this->workers[$on]->lastname
-        .'): ', $this->workers [$on]->lastname);
-        $this->workers[$on]->id = Additional::insertNumber('ID correction (' .
-        $this->workers[$on]->id
-        .'): ', $this->workers [$on]->id);
+        .'): ', $this->workers [$on]->lastname);        
         $this->workers[$on]->salary = Additional::insertDecimalNumber('Salary correction (' .
         $this->workers[$on]->salary
         .'): ', $this->workers [$on]->salary);
+        $this->workers[$on]->contractnumber = Additional::insertNumber('Contract number correction (' .
+        $this->workers[$on]->contractnumber
+        .'): ', $this->workers [$on]->contractnumber);
+        $this->workers[$on]->iban = Additional::insertNumber('IBAN number correction (' .
+        $this->workers[$on]->iban
+        .'): ', $this->workers [$on]->iban);
+        
 
         echo '==============' . PHP_EOL;
         echo 'WORKER CHANGED' . PHP_EOL;
@@ -342,11 +417,12 @@ class Start{
         echo '===========' . PHP_EOL;
         $on=1;
         foreach ($this->shifts as $shift){
-            echo $on++ . '. ' . $shift->name . ' ' . $shift->duration . PHP_EOL;
+            echo $on++ . '. ' . $shift->name . ' - ID: )' . $shift->id . ')' . PHP_EOL;
             $onw=0;
             foreach($shift->workers as $w){
-                echo "\t" . ++$onw . '. ' . $w->name . ' ' . $w->lastname . PHP_EOL;
+                echo "\t" . ++$onw . '. ' . $w->name . ' ' . $w->lastname .' - ID: (' . $w->id .')' . PHP_EOL;
             }
+            echo '........................................' . PHP_EOL;
         }
         echo '============' . PHP_EOL;
         if($showshifts){   
@@ -358,6 +434,7 @@ class Start{
 
     private function insertShifts(){
         $s=new stdClass();
+        $s->id = Additional::insertNumber('Insert shift ID: ');
         $s->name = Additional::insertText('Insert shift name: ');
         $s->duration = Additional::insertDecimalNumber('Insert number of working hours in a week: ');
 
@@ -387,6 +464,7 @@ class Start{
                 }
             }
         }
+
         $this->shifts[]=$s;
         echo '============' . PHP_EOL;
         echo 'SHIFT ADDED!' . PHP_EOL;
@@ -500,7 +578,7 @@ class Start{
         echo '===========' . PHP_EOL;
         $on=1;
         foreach ($this->products as $products){
-            echo $on++ . '. ' . $products->name . ' ' . $products->customer . PHP_EOL;
+            echo $on++ . '. ' . $products->name . ' - Customer: (' . $products->customer .')' . PHP_EOL;
         }
         echo '============' . PHP_EOL;
         if($showproducts){   
@@ -508,11 +586,27 @@ class Start{
         }
     }
 
+    private function selectProducts($showproducts = true){
+        echo '===========' . PHP_EOL;
+        echo 'All Shifts:' . PHP_EOL;
+        echo '===========' . PHP_EOL;
+        $on=1;
+        foreach ($this->products as $products){
+            echo $on++ . '. ' . $products->name . ' - Customer: (' . $products->customer .')' . PHP_EOL;
+        }
+        echo '============' . PHP_EOL;
+        if($showproducts){
+        }
+    }
+
     //  INSERTS
 
     private function insertProducts(){
         $p=new stdClass();
+        $p->id = Additional::insertNumber('insert products id: ');
         $p->name = Additional::insertText('Insert products name: ');
+        $p->color = Additional::insertText('Insert products color: ');
+        $p->price = Additional::insertDecimalNumber('Insert products price: ');
         $p->customer = Additional::insertText('Insert products customer: ');
         $this->products[]=$p;
         echo '=============' . PHP_EOL;
@@ -527,9 +621,18 @@ class Start{
         $this->overviewProducts(false);
         $on=Additional::rangeNumber('Select product: ',1,count($this->products));
         $on--;
+        $this->products[$on]->id = Additional::insertNumber('ID correction (' .
+        $this->products[$on]->id
+        .'): ', $this->products[$on]->id);
         $this->products[$on]->name = Additional::insertText('Product name correction (' .
         $this->products[$on]->name
         .'): ', $this->products[$on]->name);
+        $this->products[$on]->color = Additional::insertText('Product color correction (' .
+        $this->products[$on]->color
+        .'): ', $this->products[$on]->color);
+        $this->products[$on]->price = Additional::insertDecimalNumber('Price correction (' .
+        $this->products[$on]->price
+        .'): ', $this->products[$on]->price);
         $this->products[$on]->customer = Additional::insertText('Customer correction (' .
         $this->products[$on]->customer
         .'): ', $this->products[$on]->customer);
@@ -554,6 +657,306 @@ class Start{
         echo '================' . PHP_EOL;
         $this->productsMenu();
     }
+
+    //=============================================//
+    //  PRODUCTION - OVERVIEW/INSERT/CHANGE/DELETE //
+    //=============================================//
+
+    //  OVERVIEW
+
+    private function overviewProduction($showproduction = true){
+        echo '===========' . PHP_EOL;
+        echo 'Production:' . PHP_EOL;
+        echo '===========' . PHP_EOL;
+        $on=1;
+        foreach($this->production as $pr){
+            echo $on++ . '. ' . $pr->day . ' - Quantity: ('. $pr->quantity . ')' .  PHP_EOL;
+            $onw=0;
+            foreach($pr->workers as $w){
+                echo "\t" . ++$onw . '. ' . $w->name . ' ' . $w->lastname . ' - ID: (' . $w->id .')' . PHP_EOL;
+            }
+            $onp=0;
+            foreach($pr->products as $p){
+                echo "\t" . ++$onp . '. ' . $p->name . ' - Customer: (' . $p->customer . ')' . PHP_EOL;
+            }  
+            echo '........................................' . PHP_EOL;   
+        }
+
+        echo '===========' . PHP_EOL;
+        if($showproduction){
+            $this->productionMenu();
+        }
+    }
+
+    private function selectProduction($showproduction = true){
+        echo '===========' . PHP_EOL;
+        echo 'Production:' . PHP_EOL;
+        echo '===========' . PHP_EOL;
+        $rb=1;
+        foreach($this->production as $pr){
+            echo $on++ . '. ' . $pr->day . ' - Quantity: ('. $pr->quantity . ')' .  PHP_EOL;
+            $onw=0;
+            foreach($pr->workers as $w){
+                echo "\t" . ++$onw . '. ' . $w->name . ' ' . $w->lastname . ' - ID: (' . $w->id .')' . PHP_EOL;
+            }
+            $rbp=0;
+            foreach($pr->products as $p){
+                echo "\t" . ++$onp . '. ' . $p->name . ' - Customer: (' . $p->customer . ')' . PHP_EOL;
+            }  
+            echo '........................................' . PHP_EOL;   
+        }
+
+        echo '===========' . PHP_EOL;
+        if($showproduction){
+        }
+    }
+
+    //  INSERT
+
+    private function insertProduction(){
+        $pr=new stdClass();
+        $pr->quantity = Additional::insertNumber('Insert produced products quantity ');
+        $pr->day = Additional::insertDate('Insert date(YYYY.MM.DD): ');
+
+        $pr->products=[];
+        echo '                              ' . PHP_EOL;
+        echo 'Insert product on production: ' . PHP_EOL;
+        echo '------------------------------' . PHP_EOL;
+        if(Additional::rangeNumber('1 - Insert, 0 - Abort: ',0,1)===1){
+            if(count($this->products)===0){
+                echo '-------------------------------' . PHP_EOL;
+                echo 'There is no products in the APP' . PHP_EOL;
+                echo '-------------------------------' . PHP_EOL;
+            }else{
+                while(true){
+                    $this->selectProducts();
+                    $on = Additional::rangeNumber('Select product: ',1,count($this->products));
+                    $on--;
+                    if(!in_array($this->products[$on],$pr->products)){
+                        $pr->products[] = $this->products[$on];
+                    }else{
+                        echo ' ' . PHP_EOL;
+                        echo 'Selected product already added!' . PHP_EOL;
+                    }
+                    if(Additional::rangeNumber('1 - Continue, 0 - Abort: ',0,1)===0){
+                        break;
+                    }
+                }
+            }
+        }
+
+        $pr->workers=[];
+        echo '                       ' . PHP_EOL;
+        echo 'Insert workers in shift' . PHP_EOL;
+        echo '-----------------------' . PHP_EOL;
+        if(Additional::rangeNumber('1 - Insert,  0 - abort: ',0,1)===1){
+            if(count($this->workers)===0){
+                echo '------------------------------' . PHP_EOL;
+                echo 'There is no workers in the APP' . PHP_EOL;
+                echo '------------------------------' . PHP_EOL;
+            }else{
+                while(true){
+                    $this->selectWorkers();
+                    $on=Additional::rangeNumber('Select workers: ',1,count($this->workers));
+                    $on--;
+                    if(!in_array($this->workers[$on],$pr->workers)){
+                        $pr->workers[] = $this->workers[$on];
+                    }else{
+                        echo ' ' . PHP_EOL;
+                        echo 'Selected worker already exists in shift!' . PHP_EOL;
+                    }
+                    if(Additional::rangeNumber('1 - continue, 0 - abbort: ',0,1)===0){
+                        break;
+                    }
+                }
+            }
+        }
+
+        $this->production[]=$pr;
+        echo '================' . PHP_EOL;
+        echo 'PRODUCTION ADDED' . PHP_EOL;
+        echo '================' . PHP_EOL;
+        $this->productionMenu();
+
+    }
+
+    //  CHANGE
+
+    private function changeProduction(){
+        $this->overviewProduction(false);
+        $on=Additional::rangeNumber('Select prodaction cycle: ',1,count($this->production));
+        $on--;
+        $this->production[$on]->quantity = Additional::insertNumber('Insert correction products quantity (' .
+        $this->production[$on]->quantity
+        . '): ', $this->production[$on]->quantity);
+        $this->production[$on]->day = Additional::insertDate('Insert date correction (' .
+        $this->production[$on]->day
+        . '): ', $this->production[$on]->day);
+
+        echo '              ' . PHP_EOL;
+        echo '==============' . PHP_EOL;
+        echo 'CHANGE PRODUCT' . PHP_EOL;
+        echo '==============' . PHP_EOL;
+
+        if(Additional::rangeNumber('1 - Change product, 0 - Continue: ',0,1)===1){
+
+            echo '                                    ' . PHP_EOL;
+            echo '====================================' . PHP_EOL;
+            echo 'Delete product from production cycle' . PHP_EOL;
+            echo '====================================' . PHP_EOL;
+
+            if(Additional::rangeNumber('1 - Delete, 0 - Abort: ',0,1)===1){
+                if(count($this->products)===0){
+                    echo '-------------------------------' . PHP_EOL;
+                    echo 'There is no products in the APP' . PHP_EOL;
+                    echo '-------------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                              ' . PHP_EOL;
+                        echo '==============================' . PHP_EOL;
+                        echo 'Delete product from production' . PHP_EOL;
+                        echo '==============================' . PHP_EOL;
+
+                        $this->selectProducts($this->production[$on]->products);
+                        $onp=Additional::rangeNumberP('Select product: ',1,count($this->production[$on]->products));
+                        $onp--;
+                        array_splice($this->production[$on]->products,$onp,1);
+
+                        if(Additional::rangeNumber('1 - Continue, 0 - Abort: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }
+            }
+
+            echo '                         ' . PHP_EOL;
+            echo '=========================' . PHP_EOL;
+            echo 'Add product to production' . PHP_EOL;
+            echo '=========================' . PHP_EOL;
+
+            if(Additional::rangeNumber('1 - Add, 0 - Abort: ',0,1)===1){
+                if(count($this->products)===0){
+                    echo '-------------------------------' . PHP_EOL;
+                    echo 'There is no products in the APP' . PHP_EOL;
+                    echo '-------------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                         ' . PHP_EOL;
+                        echo '=========================' . PHP_EOL;
+                        echo 'Add product to production' . PHP_EOL;
+                        echo '=========================' . PHP_EOL;
+                        $this->selectProducts();
+                        $onp = Additional::rangeNumber('Select product: ',1,count($this->products));
+                        $onp--;
+                        if(!in_array($this->products[$onp],$this->production[$on]->products)){
+                            $this->production[$on]->products[]=$this->products[$onp];
+                        }else{
+                            echo ' ' . PHP_EOL;
+                            echo 'Selected product already added' . PHP_EOL;
+                        }
+                        if(Additional::rangeNumber('1 - Continue, 0 Abort: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        echo '              ' . PHP_EOL;
+        echo '==============' . PHP_EOL;
+        echo 'CHANGE WORKERS' . PHP_EOL;
+        echo '==============' . PHP_EOL;
+
+        if(Additional::rangeNumber('1 - Change worker, 0 - Continue: ',0,1)===1){
+
+            echo '                              ' . PHP_EOL;
+            echo '==============================' . PHP_EOL;
+            echo 'Delete workers from production' . PHP_EOL;
+            echo '==============================' . PHP_EOL;
+
+            if(Additional::rangeNumber('1 - Delete, 0 - Abort: ',0,1)===1){
+                if(count($this->workers)===0){
+                    echo '------------------------------' . PHP_EOL;
+                    echo 'There is no workers in the APP' . PHP_EOL;
+                    echo '------------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                                ' . PHP_EOL;
+                        echo '================================' . PHP_EOL;
+                        echo 'Delete workers from production: ' . PHP_EOL;
+                        echo '================================' . PHP_EOL;
+                        $this->selectWorkers($this->production[$on]->workers);
+                        $onw=Additional::rangeNumber2('Select worker: ',1,count($this->production[$on]->workers));
+                        $onw--;
+                        array_splice($this->production[$on]->workers,$onw,1);
+    
+                        if(Additional::rangeNumber('1 - continue, 0 - abort: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }                
+            }
+
+            echo '                              ' . PHP_EOL;
+            echo '==============================' . PHP_EOL;
+            echo 'Insert workers in production: ' . PHP_EOL;
+            echo '==============================' . PHP_EOL;
+
+            if(Additional::rangeNumber('1 - Insert, 0 - Abort: ',0,1)===1){
+                if(count($this->workers)===0){
+                    echo '------------------------------' . PHP_EOL;
+                    echo 'There is no workers in the APP' . PHP_EOL;
+                    echo '------------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                              ' . PHP_EOL;
+                        echo '==============================' . PHP_EOL;
+                        echo 'Adding workers to production: ' . PHP_EOL;
+                        echo '==============================' . PHP_EOL;
+                        $this->selectWorkers();
+                        $onw=Additional::rangeNumber('Select worker: ',1,count($this->workers));
+                        $onw--;
+                        if(!in_array($this->workers[$onw],$this->production[$on]->workers)){
+                            $this->production[$on]->workers[]=$this->workers[$onw];
+                        }else{
+                            echo ' ' . PHP_EOL;
+                            echo 'Selected worker already exists in shift!' . PHP_EOL;
+                        }
+                        if(Additional::rangeNumber('1 - continue, 0 - abort: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        echo '==================' . PHP_EOL;
+        ECHO 'PRODUCTION CHANGED' . PHP_EOL;
+        echo '==================' . PHP_EOL;
+        $this->productionMenu();
+    }
+
+    //  DELETE
+
+    private function deleteProduction(){
+        $this->overviewProduction(false);
+        $on = Additional::rangeNumber('Select production cycle to delete: ',1,count($this->production));
+        $on--;
+        echo ' ' . PHP_EOL;
+        echo '--------------------------------------------' . PHP_EOL;
+        echo 'Are you sure that you want to delete cycle? ' . PHP_EOL;
+        echo '--------------------------------------------' . PHP_EOL;
+        echo ' ' . PHP_EOL;
+        if(Additional::rangeNumber('1 - Delete, 0 - Abort: ',0,1)===1){
+            array_splice($this->production,$on,1);
+            echo '=========================' . PHP_EOL;
+            echo 'PRODUCTION CYCLE DELETED!' . PHP_EOL;
+            echo '=========================' . PHP_EOL;
+        }
+        $this->productionMenu();
+    }
+
+
 
 }
 
