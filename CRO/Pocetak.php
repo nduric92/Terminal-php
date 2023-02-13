@@ -425,7 +425,8 @@ class Pocetak{
             $rbr=0;
             foreach($s->radnici as $r){
                 echo "\t" . ++$rbr . '. ' . $r->ime . ' ' . $r->prezime . ' - ID: (' . $r->id .')' . PHP_EOL;
-            }         
+            }  
+            echo '........................................' . PHP_EOL;       
         }
 
         echo '===========' . PHP_EOL;
@@ -679,19 +680,44 @@ class Pocetak{
         echo '==================' . PHP_EOL;
         $rb=1;
         foreach($this->proizvodniciklus as $pc){
-            echo $rb++ . '. ' . $pc->dan . ' - Kolicina: ('. $pc->kolicina . ')' .  PHP_EOL;                
+            echo $rb++ . '. ' . $pc->dan . ' - Kolicina: ('. $pc->kolicina . ')' .  PHP_EOL;
+            $rbr=0;
+            foreach($pc->radnici as $r){
+                echo "\t" . ++$rbr . '. ' . $r->ime . ' ' . $r->prezime . ' - ID: (' . $r->id .')' . PHP_EOL;
+            }
+            $rbp=0;
             foreach($pc->proizvodi as $p){
-                echo "\t" . ++$rb . '. ' . $p->naziv . ' - Narucitelj: (' . $p->narucitelj . ')' . PHP_EOL;
-                $rbr=0;
-                foreach($pc->radnici as $r){
-                    echo "\t" . ++$rbr . '. ' . $r->ime . ' ' . $r->prezime . ' - ID: (' . $r->id .')' . PHP_EOL;
-                }
-            }     
+                echo "\t" . ++$rbp . '. ' . $p->naziv . ' - Narucitelj: (' . $p->narucitelj . ')' . PHP_EOL;
+            }  
+            echo '........................................' . PHP_EOL;   
         }
 
         echo '===========' . PHP_EOL;
         if($prikaziproizvodniciklus){
             $this->proizvodniCiklusIzbornik();
+        }
+    }
+
+    private function odabirProizvodnihCiklusa($prikaziproizvodniciklus = true){
+        echo '==================' . PHP_EOL;
+        echo 'Proizvodni ciklus:' . PHP_EOL;
+        echo '==================' . PHP_EOL;
+        $rb=1;
+        foreach($this->proizvodniciklus as $pc){
+            echo $rb++ . '. ' . $pc->dan . ' - Kolicina: ('. $pc->kolicina . ')' .  PHP_EOL;
+            $rbr=0;
+            foreach($pc->radnici as $r){
+                echo "\t" . ++$rbr . '. ' . $r->ime . ' ' . $r->prezime . ' - ID: (' . $r->id .')' . PHP_EOL;
+            }
+            $rbp=0;   
+            foreach($pc->proizvodi as $p){
+                echo "\t" . ++$rbp . '. ' . $p->naziv . ' - Narucitelj: (' . $p->narucitelj . ')' . PHP_EOL;
+            }    
+            echo '........................................' . PHP_EOL; 
+        }
+
+        echo '===================================' . PHP_EOL;
+        if($prikaziproizvodniciklus){
         }
     }
 
@@ -763,7 +789,174 @@ class Pocetak{
         $this->proizvodniCiklusIzbornik();
     }
 
+    //  IZMJENA
 
+    private function izmjenaProizvodnihCiklusa(){
+        $this->pregledProizvodnihCiklusa(false);
+        $rb=Pomocno::brojRaspon('Odaberite proizvodni ciklus: ',1,count($this->proizvodniciklus));
+        $rb--;
+        $this->proizvodniciklus[$rb]->kolicina = Pomocno::unosBroja('Unesite ispravak kolicine proizvoda (' .
+        $this->proizvodniciklus[$rb]->kolicina
+        .'): ', $this->proizvodniciklus[$rb]->kolicina);
+        $this->proizvodniciklus[$rb]->dan = Pomocno::unosDatuma('Unesite ispravak datuma proizvodnje (' .
+        $this->proizvodniciklus[$rb]->dan
+        .'): ', $this->proizvodniciklus[$rb]->dan);
+
+        echo '                 ' . PHP_EOL;
+        echo '=================' . PHP_EOL;
+        echo 'IZMJENA PROIZVODA' . PHP_EOL;
+        echo '=================' . PHP_EOL;
+
+        if(Pomocno::brojRaspon('1 - Izmjeni proizvod, 0 - Preskoci: ',0,1)===1){
+
+            echo '                                 ' . PHP_EOL;
+            echo '=================================' . PHP_EOL;
+            echo 'Brisanje proizvoda sa proizvodnje' . PHP_EOL;
+            echo '=================================' . PHP_EOL;
+
+            if(Pomocno::brojRaspon('1 - Brisanje, 0 - Prekid: ',0,1)===1){
+                if(count($this->proizvodi)===0){
+                    echo '---------------------------' . PHP_EOL;
+                    echo 'Nema proizvoda u aplikaciji' . PHP_EOL;
+                    echo '---------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                                 ' . PHP_EOL;
+                        echo '=================================' . PHP_EOL;
+                        echo 'Brisanje proizvoda sa proizvodnje' . PHP_EOL;
+                        echo '=================================' . PHP_EOL;
+                        $this->odabirProizvoda($this->proizvodniciklus[$rb]->proizvodi);
+                        $rbp = Pomocno::brojRasponP('Odaberi proizvod: ',1,count($this->proizvodniciklus[$rb]->proizvodi));
+                        $rbp--;
+                        array_splice($this->proizvodniciklus[$rb]->proizvodi,$rbp,1);
+
+                        if(Pomocno::brojRaspon('1 - Nastavi, 0 - Prekid: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }
+            }
+
+            echo '                                  ' . PHP_EOL;
+            echo '==================================' . PHP_EOL;
+            echo 'Dodavanje proizvoda na proizvodnju' . PHP_EOL;
+            echo '==================================' . PHP_EOL;
+
+            if(Pomocno::brojRaspon('1 - Dodaj, 0 - Odustani: ',0,1)===1){
+                if(count($this->proizvodi)===0){
+                    echo '---------------------------' . PHP_EOL;
+                    echo 'Nema proizvoda u aplikaciji' . PHP_EOL;
+                    echo '---------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                                  ' . PHP_EOL;
+                        echo '==================================' . PHP_EOL;
+                        echo 'Dodavanje proizvoda na proizvodnju' . PHP_EOL;
+                        echo '==================================' . PHP_EOL;
+                        $this->odabirProizvoda();
+                        $rbp = Pomocno::brojRaspon('Odaberi proizvod: ',1,count($this->proizvodi));
+                        $rbp--;
+                        if(!in_array($this->proizvodi[$rbp],$this->proizvodniciklus[$rb]->proizvodi)){
+                            $this->proizvodniciklus[$rb]->proizvodi[]=$this->proizvodi[$rbp];
+                        }else{
+                            echo ' ' . PHP_EOL;
+                            echo 'Odabrani proizvod je vec dodan na proizvodnju!' . PHP_EOL;
+                        }
+                        if(Pomocno::brojRaspon('1 - Nastavi, 0 - Prekid: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }
+            }            
+        }
+
+        echo '               ' . PHP_EOL;
+        echo '===============' . PHP_EOL;
+        echo 'IZMJENA RADNIKA' . PHP_EOL;
+        echo '===============' . PHP_EOL;
+
+        if(Pomocno::brojRaspon('1 - Izmjeni radnika, 0 - Preskoci: ',0,1)===1){
+
+            echo '                               ' . PHP_EOL;
+            echo '===============================' . PHP_EOL;
+            echo 'Brisanje radnika na proizvodnji' . PHP_EOL;
+            echo '===============================' . PHP_EOL;
+            
+            if(Pomocno::brojRaspon('1 - Brisanje,  0 - prekid: ',0,1)===1){
+                if(count($this->radnici)===0){
+                    echo '---------------------------' . PHP_EOL;
+                    echo 'Nema radnika na proizvodnji' . PHP_EOL;
+                    echo '---------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                                 ' . PHP_EOL;
+                        echo '=================================' . PHP_EOL;
+                        echo 'Brisanje radnika sa proizvodnje: ' . PHP_EOL;
+                        echo '=================================' . PHP_EOL;
+                        $this->odabirRadnika($this->proizvodniciklus[$rb]->radnici);
+                        $rbr = Pomocno::brojRaspon2('Odaberi radnika: ',1,count($this->proizvodniciklus[$rb]->radnici));
+                        $rbr--;
+                        array_splice($this->proizvodniciklus[$rb]->radnici,$rbr,1);
+                
+                        if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }
+            }
+
+            echo '                             ' . PHP_EOL;
+            echo '=============================' . PHP_EOL;
+            echo 'Dodavanje radnika na proizvod' . PHP_EOL;
+            echo '=============================' . PHP_EOL;
+
+            if(Pomocno::brojRaspon('1 - Dodaj, 0 - Odustani: ',0,1)===1){
+                if(count($this->radnici)===0){
+                    echo '-------------------------' . PHP_EOL;
+                    echo 'Nema radnika u aplikaciji' . PHP_EOL;
+                    echo '-------------------------' . PHP_EOL;
+                }else{
+                    while(true){
+                        echo '                               ' . PHP_EOL;
+                        echo '===============================' . PHP_EOL;
+                        echo 'Dodavanje radnika na proizvod: ' . PHP_EOL;
+                        echo '===============================' . PHP_EOL;
+                        $this->odabirRadnika();
+                        $rbr = Pomocno::brojRaspon('Odaberi radnika: ',1,count($this->radnici));
+                        $rbr--;
+                        if(!in_array($this->radnici[$rbr],$this->proizvodniciklus[$rb]->radnici)){
+                            $this->proizvodniciklus[$rb]->radnici[]=$this->radnici[$rbr];
+                        }else{
+                            echo ' ' . PHP_EOL;
+                            echo 'Odabrani radnik postoji na proizvodnji!' . PHP_EOL;
+                        }
+                        if(Pomocno::brojRaspon('1 - nastavi, 0 - prekid: ',0,1)===0){
+                            break;
+                        }
+                    }
+                }
+            }            
+        }
+
+        echo '============================' . PHP_EOL;
+        echo 'PROIZVODNI CIKLUS IZMJENJEN!' . PHP_EOL;
+        echo '============================' . PHP_EOL;
+
+        $this->proizvodniCiklusIzbornik();
+    }
+
+    //  BRISANJE
+
+    private function brisanjeProizvodnihCiklusa(){
+        $this->pregledProizvodnihCiklusa(false);
+        $rb= Pomocno::brojRaspon('Odaberite proizvodni ciklus za brisanje: ',1,count($this->proizvodniciklus));
+        $rb--;
+        array_splice($this->proizvodniciklus,$rb,1);
+        echo '==========================' . PHP_EOL;
+        echo 'PROIZVODNI CIKLUS OBRISAN!' . PHP_EOL;
+        echo '==========================' . PHP_EOL;
+        $this->proizvodniCiklusIzbornik();
+    }
 
 }
 

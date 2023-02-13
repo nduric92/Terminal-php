@@ -19,6 +19,34 @@ class Pomocno{
         }
     }
 
+    public static function brojRaspon2($poruka,$min,$max){
+        while(true){
+            $i=readline($poruka);
+            $i=(int)$i;
+            if($i<$min || $i>$max){
+                echo ' ' . PHP_EOL;
+                echo 'Radnik je vec obrisan! ' . PHP_EOL;
+                echo ' ' . PHP_EOL;
+                break;
+            }
+            return $i;
+        }
+    }
+
+    public static function brojRasponP($poruka,$min,$max){
+        while(true){
+            $i=readline($poruka);
+            $i=(int)$i;
+            if($i<$min || $i>$max){
+                echo ' ' . PHP_EOL;
+                echo 'Proizvod je vec obrisan! ' . PHP_EOL;
+                echo ' ' . PHP_EOL;
+                break;
+            }
+            return $i;
+        }
+    }
+
 
     public static function unosTeksta($poruka){
         while(true){
@@ -56,19 +84,7 @@ class Pomocno{
         }
     }
 
-    public static function brojRaspon2($poruka,$min,$max){
-        while(true){
-            $i=readline($poruka);
-            $i=(int)$i;
-            if($i<$min || $i>$max){
-                echo ' ' . PHP_EOL;
-                echo 'Radnik je vec obrisan! ' . PHP_EOL;
-                echo ' ' . PHP_EOL;
-                break;
-            }
-            return $i;
-        }
-    }
+    
 
     public static function unosDatuma($poruka){
         while (true){
