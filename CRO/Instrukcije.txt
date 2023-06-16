@@ -1,0 +1,5 @@
+Open CMD
+Full path inside the project folder, than:
+php Pocetak.php
+
+ENJOY
